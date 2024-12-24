@@ -1,0 +1,138 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Sender</title>
+</head>
+<body>
+    <h1>Send Location to Server</h1>
+    <p id="status">Requesting location...</p>
+
+    <script>
+        const SERVER_URL = 'https://location-flask.onrender.com/update_location';  // Replace YOUR_SERVER_IP with your server's IP
+
+        // Function to send location to the server
+        function sendLocation(latitude, longitude) {
+            fetch(SERVER_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ latitude, longitude })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("status").innerText = "Location sent successfully!";
+                console.log("Server response:", data);
+            })
+            .catch(error => {
+                document.getElementById("status").innerText = "Failed to send location.";
+                console.error("Error sending location:", error);
+            });
+        }
+
+        // Function to get the device's location
+        function requestLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        document.getElementById("status").innerText = "Location retrieved. Sending to server...";
+                        sendLocation(latitude, longitude);
+                    },
+                    (error) => {
+                        document.getElementById("status").innerText = "Failed to retrieve location.";
+                        console.error("Error retrieving location:", error);
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        maximumAge: 0,
+                        timeout: 10000
+                    }
+                );
+            } else {
+                document.getElementById("status").innerText = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        // Request location on page load
+        window.onload = requestLocation;
+    </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Sender</title>
+</head>
+<body>
+    <h1>Send Location to Server</h1>
+    
+    <label for="name">Name:</label>
+    <input type="text" id="name" required>
+    
+    <button onclick="requestLocation()">Submit</button>
+    <p id="status">Enter your name and click Submit to send location.</p>
+
+    <script>
+        const SERVER_URL = 'https://location-flask.onrender.com/update_location';  // Replace with your actual server URL
+
+        // Function to send name and location to the server
+        function sendLocation(name, latitude, longitude) {
+            fetch(SERVER_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, latitude, longitude })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("status").innerText = "Location sent successfully!";
+                console.log("Server response:", data);
+            })
+            .catch(error => {
+                document.getElementById("status").innerText = "Failed to send location.";
+                console.error("Error sending location:", error);
+            });
+        }
+
+        // Function to get the device's location
+        function requestLocation() {
+            const name = document.getElementById("name").value;
+            if (!name) {
+                document.getElementById("status").innerText = "Please enter your name.";
+                return;
+            }
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        document.getElementById("status").innerText = "Location retrieved. Sending to server...";
+                        sendLocation(name, latitude, longitude);
+                    },
+                    (error) => {
+                        document.getElementById("status").innerText = "Failed to retrieve location.";
+                        console.error("Error retrieving location:", error);
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        maximumAge: 0,
+                        timeout: 10000
+                    }
+                );
+            } else {
+                document.getElementById("status").innerText = "Geolocation is not supported by this browser.";
+            }
+        }
+    </script>
+</body>
+</html>
