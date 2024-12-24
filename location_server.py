@@ -70,7 +70,8 @@ app = Flask(__name__)
 CORS(app)  # Allow cross-origin requests
 
 # Connect to MongoDB (replace with your MongoDB connection string)
-client = MongoClient("mongodb+srv://naved:12345@cluster0.gevcl.mongodb.net/")
+db_password = os.getenv("DB_PASSWORD")
+client = MongoClient(f"mongodb+srv://naved:{db_password}@cluster0.gevcl.mongodb.net/")
 db = client["mydatabase"]
 collection = db["locations"]
 
